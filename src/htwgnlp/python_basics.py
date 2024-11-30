@@ -25,7 +25,6 @@ def get_even_numbers(numbers: list[int]) -> list[int]:
     """
     # TODO ASSIGNMENT-0: implement this function
     return [number for number in numbers if number % 2 == 0]
-    raise NotImplementedError("This function needs to be implemented.")
 
 
 def get_long_words(words: list[str]) -> list[str]:
@@ -45,7 +44,6 @@ def get_long_words(words: list[str]) -> list[str]:
     """
     # TODO ASSIGNMENT-0: implement this function
     return [word for word in words if len(word) > 5]
-    raise NotImplementedError("This function needs to be implemented.")
 
 
 def get_uppercase_words(words: list[str]) -> list[str]:
@@ -65,7 +63,6 @@ def get_uppercase_words(words: list[str]) -> list[str]:
     """
     # TODO ASSIGNMENT-0: implement this function
     return [word.upper() for word in words]
-    raise NotImplementedError("This function needs to be implemented.")
 
 
 def build_phrases(adjectives: list[str], animals: list[str]) -> list[str]:
@@ -96,7 +93,6 @@ def build_phrases(adjectives: list[str], animals: list[str]) -> list[str]:
         for animal in animals
         if adjective and animal
     ]
-    raise NotImplementedError("This function needs to be implemented.")
 
 
 def get_word_lengths(words: list[str]) -> dict[str, int]:
@@ -116,7 +112,6 @@ def get_word_lengths(words: list[str]) -> dict[str, int]:
     """
     # TODO ASSIGNMENT-0: implement this function
     return {word: len(word) for word in words}
-    raise NotImplementedError("This function needs to be implemented.")
 
 
 def print_product_price(product: str, price: int | float) -> str:
@@ -143,8 +138,7 @@ def print_product_price(product: str, price: int | float) -> str:
     # TODO ASSIGNMENT-0: implement this function
     if price <= 0:
         raise ValueError("Price must be a positive number.")
-    return f"The price of {product} is {price:.2f} USD."
-    raise NotImplementedError("This function needs to be implemented.")
+    return f'The price of the product "{product}" is {price:.2f} USD.'
 
 
 def count_purchases(purchases: list[str]) -> Counter:
@@ -163,7 +157,6 @@ def count_purchases(purchases: list[str]) -> Counter:
     """
     # TODO ASSIGNMENT-0: implement this function
     return Counter(purchases)
-    raise NotImplementedError("This function needs to be implemented.")
 
 
 def get_top_x_products(purchases: list[str], x: int) -> list[tuple[str, int]]:
@@ -189,7 +182,6 @@ def get_top_x_products(purchases: list[str], x: int) -> list[tuple[str, int]]:
     """
     # TODO ASSIGNMENT-0: implement this function
     return count_purchases(purchases).most_common(x)
-    raise NotImplementedError("This function needs to be implemented.")
 
 
 def sort_people_by_age(people: list[tuple[str, int]]) -> list[tuple[str, int]]:
@@ -211,7 +203,6 @@ def sort_people_by_age(people: list[tuple[str, int]]) -> list[tuple[str, int]]:
     # TODO ASSIGNMENT-0: implement this function
     name, age = (0, 1)
     return sorted(people, key=lambda person: (person[age], person[name]))
-    raise NotImplementedError("This function needs to be implemented.")
 
 
 def write_dict_to_json_file(data: dict, filename: str) -> None:
@@ -233,7 +224,6 @@ def write_dict_to_json_file(data: dict, filename: str) -> None:
     with open(filename, "w") as file:
         json.dump(data, file)
     return
-    raise NotImplementedError("This function needs to be implemented.")
 
 
 def read_dict_from_json_file(filename: str) -> dict:
@@ -248,4 +238,3 @@ def read_dict_from_json_file(filename: str) -> dict:
     # TODO ASSIGNMENT-0: implement this function
     with open(filename, "r") as file:
         return json.load(file)
-    raise NotImplementedError("This function needs to be implemented.")
