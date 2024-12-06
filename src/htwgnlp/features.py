@@ -28,7 +28,7 @@ class CountVectorizer:
 
         """
         # TODO ASSIGNMENT-2: implement this method
-        raise NotImplementedError("This method needs to be implemented.")
+        self.word_frequencies = defaultdict(int)
 
     def build_word_frequencies(
         self, tweets: list[list[str]], labels: np.ndarray
@@ -50,8 +50,16 @@ class CountVectorizer:
             labels (list[str]): a list of corresponding class labels
 
         """
+
         # TODO ASSIGNMENT-2: implement this method
-        raise NotImplementedError("This method needs to be implemented.")
+        def increment_word_frequency(word: str, label: int):
+            self.word_frequencies[(word, label)] += 1
+
+        [
+            increment_word_frequency(word, int(label[0]))
+            for tweet, label in zip(tweets, labels)
+            for word in tweet
+        ]
 
     def get_features(self, tweet: list[str]) -> np.ndarray:
         """Returns a feature vector for a given tweet.
@@ -66,4 +74,8 @@ class CountVectorizer:
         """
 
         # TODO ASSIGNMENT-2: implement this method
-        raise NotImplementedError("This method needs to be implemented.")
+        def get_cumulative_word_frequency(label):
+            return sum(self.word_frequencies[(word, label)] for word in tweet)
+
+        pos, neg = (get_cumulative_word_frequency(label) for label in (1, 0))
+        return np.array([1, pos, neg])
