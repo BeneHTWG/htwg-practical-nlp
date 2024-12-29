@@ -2,7 +2,7 @@
 
 During the semester, each student should give a presentation about an NLP-related topic.
 
-The presentation is ungraded, but mandatory to pass the course.
+The presentation is ungraded, but it is mandatory to give a presentation in order to be admitted to the exam.
 
 ## Topic
 
@@ -27,7 +27,8 @@ We will discuss the topic assignments in one of the first lectures.
 
 ## Scope
 
-The scope of the presentation should be around **15-20 minutes**. Ideally, you should include a **demo or practical example** (but I am aware that probably not all topics are equally suitable for that).
+The scope of the presentation should not exceed **10 minutes**.
+Ideally, you should include a **demo or practical example** (but I am aware that probably not all topics are equally suitable for that).
 
 For the **practical part**, try to aim for 25-50% of the time (depending on the topic). Feel free to use any tool you want. You can show something in the browser, use Postman or Jupyter notebooks, or do some live hacking on the command line. 🤓
 

@@ -223,7 +223,6 @@ def write_dict_to_json_file(data: dict, filename: str) -> None:
     # TODO ASSIGNMENT-0: implement this function
     with open(filename, "w") as file:
         json.dump(data, file)
-    return
 
 
 def read_dict_from_json_file(filename: str) -> dict:
@@ -238,3 +237,41 @@ def read_dict_from_json_file(filename: str) -> dict:
     # TODO ASSIGNMENT-0: implement this function
     with open(filename, "r") as file:
         return json.load(file)
+
+
+def slicing_examples(input_list):
+    """
+    This function takes a list and returns a dictionary with results of different slicing operations.
+
+    Implement the following:
+    1. "first_three": Get the first three elements.
+    2. "last_two": Get the last two elements.
+    3. "reversed": Reverse the list.
+    4. "skip_two": Get every second element in the list.
+    5. "middle_slice": Get all elements except the first and last.
+
+    Example usage:
+    slicing_examples([1, 2, 3, 4, 5, 6])
+    Expected output:
+    {
+        "first_three": [1, 2, 3],
+        "last_two": [5, 6],
+        "reversed": [6, 5, 4, 3, 2, 1],
+        "skip_two": [1, 3, 5],
+        "middle_slice": [2, 3, 4, 5]
+    }
+
+    Args:
+        input_list (list): A list of elements.
+
+    Returns:
+        dict: A dictionary with keys as the operation names and values as the resulting sliced lists.
+    """
+    # TODO ASSIGNMENT-0: implement this function
+    return {
+        "first_three": input_list[:3],
+        "last_two": input_list[-2:],
+        "reversed": input_list[::-1],
+        "skip_two": input_list[::2],
+        "middle_slice": input_list[1:-1],
+    }
