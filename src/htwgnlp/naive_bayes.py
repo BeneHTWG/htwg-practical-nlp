@@ -40,8 +40,11 @@ class NaiveBayes:
         Args:
             alpha (float, optional): the smoothing parameter. Defaults to 1.0.
         """
-        # TODO ASSIGNMENT-3: implement this method
-        raise NotImplementedError("This method needs to be implemented.")
+        self.word_probabilities: pd.DataFrame = None
+        self.df_freqs: pd.DataFrame = None
+        self.log_ratios: pd.Series = None
+        self._logprior: float = 0.0
+        self.alpha: float = alpha
 
     @property
     def logprior(self) -> float:
@@ -50,8 +53,7 @@ class NaiveBayes:
         Returns:
             float: the logprior
         """
-        # TODO ASSIGNMENT-3: implement this method
-        raise NotImplementedError("This method needs to be implemented.")
+        return self._logprior
 
     @logprior.setter
     def logprior(self, y: np.ndarray) -> None:
@@ -62,8 +64,10 @@ class NaiveBayes:
         Args:
             y (np.ndarray): a numpy array of class labels of shape (m, 1), where m is the number of samples
         """
-        # TODO ASSIGNMENT-3: implement this method
-        raise NotImplementedError("This method needs to be implemented.")
+        assert len(np.unique(y)) == 2, "y must contain both classes."
+        n1 = np.sum(y)
+        n0 = len(y) - n1
+        self._logprior = np.log(n1 / n0)
 
     def _get_word_frequencies(self, X: list[list[str]], y: np.ndarray) -> None:
         """Computes the word frequencies per class.
@@ -78,24 +82,31 @@ class NaiveBayes:
             X (list[list[str]]): a list of tokenized text samples of length m, where m is the number of samples.
             y (np.ndarray): a numpy array of class labels of shape (m, 1), where m is the number of samples.
         """
-        # TODO ASSIGNMENT-3: implement this method
-        raise NotImplementedError("This method needs to be implemented.")
+        word_freqs: dict[int, Counter] = {cls: Counter() for cls in [0, 1]}
+
+        for sample, label in zip(X, y):
+            word_freqs[label[0]].update(sample)
+
+        self.df_freqs = pd.DataFrame(word_freqs).fillna(0).astype(int)
 
     def _get_word_probabilities(self) -> None:
         """Computes the conditional probabilities of a word given a class using Laplacian Smoothing.
 
         Based on the word frequencies, the method computes the conditional probabilities for a word given its class and stores them in the `word_probabilities` attribute.
         """
-        # TODO ASSIGNMENT-3: implement this method
-        raise NotImplementedError("This method needs to be implemented.")
+        self.word_probabilities = (self.df_freqs + self.alpha) / (
+            self.df_freqs.sum() + self.alpha * len(self.df_freqs)
+        )
 
     def _get_log_ratios(self) -> None:
         """Computes the log ratio of the conditional probabilities.
 
         Based on the word probabilities, the method computes the log ratios and stores them in the `log_ratios` attribute.
         """
-        # TODO ASSIGNMENT-3: implement this method
-        raise NotImplementedError("This method needs to be implemented.")
+        self.log_ratios = pd.Series(
+            np.log(self.word_probabilities[1] / self.word_probabilities[0]),
+            index=self.word_probabilities.index,
+        )
 
     def fit(self, X: list[list[str]], y: np.ndarray) -> None:
         """Fits a Naive Bayes model for the given text samples and labels.
@@ -111,8 +122,11 @@ class NaiveBayes:
             X (list[list[str]]): a list of tokenized text samples of length m, where m is the number of samples
             y (np.ndarray): a numpy array of class labels of shape (m, 1), where m is the number of samples
         """
-        # TODO ASSIGNMENT-3: implement this method
-        raise NotImplementedError("This method needs to be implemented.")
+        assert len(X) == len(y), "The number of text samples and labels must be equal."
+        assert len(y.shape) == 2, "y must be a 2-dimensional array."
+        assert y.shape[1] == 1, "y must be a column vector."
+
+        self._train_naive_bayes(X, y)
 
     def _train_naive_bayes(self, X: list[list[str]], y: np.ndarray) -> None:
         """Trains a Naive Bayes model for the given text samples and labels.
@@ -127,8 +141,10 @@ class NaiveBayes:
             X (list[list[str]]): a list of tokenized text samples of length m, where m is the number of samples
             y (np.ndarray): a numpy array of class labels of shape (m, 1), where m is the number of samples
         """
-        # TODO ASSIGNMENT-3: implement this method
-        raise NotImplementedError("This method needs to be implemented.")
+        self.logprior = y
+        self._get_word_frequencies(X, y)
+        self._get_word_probabilities()
+        self._get_log_ratios()
 
     def predict(self, X: list[list[str]]) -> np.ndarray:
         """Predicts the class labels for the given text samples.
@@ -141,8 +157,7 @@ class NaiveBayes:
         Returns:
             np.ndarray: a numpy array of class labels of shape (m, 1), where m is the number of samples
         """
-        # TODO ASSIGNMENT-3: implement this method
-        raise NotImplementedError("This method needs to be implemented.")
+        return (self.predict_prob(X) > 0).astype(int)
 
     def predict_prob(self, X: list[list[str]]) -> np.ndarray:
         """Calculates the log likelihoods for the given text samples.
@@ -155,8 +170,7 @@ class NaiveBayes:
         Returns:
             np.ndarray: a numpy array of class probabilities of shape (m, 1), where m is the number of samples
         """
-        # TODO ASSIGNMENT-3: implement this method
-        raise NotImplementedError("This method needs to be implemented.")
+        return np.array([self.predict_single(x) for x in X]).reshape(-1, 1)
 
     def predict_single(self, x: list[str]) -> float:
         """Calculates the log likelihood for a single text sample.
@@ -169,5 +183,5 @@ class NaiveBayes:
         Returns:
             float: the log likelihood of the text sample
         """
-        # TODO ASSIGNMENT-3: implement this method
-        raise NotImplementedError("This method needs to be implemented.")
+        filtered_x = [word for word in x if word in self.log_ratios.index]
+        return self.log_ratios[filtered_x].sum() + self.logprior
