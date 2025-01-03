@@ -10,6 +10,7 @@ Hints:
 """
 
 import pickle
+from typing import Optional
 
 import numpy as np
 import pandas as pd
@@ -27,8 +28,8 @@ class WordEmbeddings:
 
     def __init__(self) -> None:
         """Initializes the WordEmbeddings class."""
-        self._embeddings: dict[str, np.ndarray]
-        self._embeddings_df: pd.DataFrame
+        self._embeddings: Optional[dict[str, np.ndarray]] = None
+        self._embeddings_df: Optional[pd.DataFrame] = None
 
     @property
     def embedding_values(self) -> np.ndarray:
@@ -37,6 +38,8 @@ class WordEmbeddings:
         Returns:
             np.ndarray: the embedding values as a numpy array of shape (n, d), where n is the vocabulary size and d is the number of dimensions
         """
+        if not (self._embeddings_df and self._embeddings):
+            raise ValueError("The embeddings have not been loaded yet.")
         return self._embeddings_df.values
 
     def _load_raw_embeddings(self, path: str) -> None:
@@ -77,6 +80,8 @@ class WordEmbeddings:
         Returns:
             np.ndarray | None: the embedding vector for the given word in the form of a numpy array of shape (d,), where d is the number of dimensions, or None if the word is not in the vocabulary
         """
+        if not (self._embeddings_df and self._embeddings):
+            raise ValueError("The embeddings have not been loaded yet.")
         return self._embeddings.get(word)
 
     def euclidean_distance(self, v: np.ndarray) -> np.ndarray:
@@ -126,6 +131,8 @@ class WordEmbeddings:
         """
         if metric not in ["euclidean", "cosine"]:
             raise ValueError("The metric must be 'euclidean' or 'cosine'.")
+        if not (self._embeddings_df and self._embeddings):
+            raise ValueError("The embeddings have not been loaded yet.")
         assert word in self._embeddings, f"The word '{word}' is not in the vocabulary."
 
         get_similarities, slice_args = {
@@ -153,6 +160,9 @@ class WordEmbeddings:
         """
         if metric not in ["euclidean", "cosine"]:
             raise ValueError("The metric must be 'euclidean' or 'cosine'.")
+
+        if not (self._embeddings_df and self._embeddings):
+            raise ValueError("The embeddings have not been loaded yet.")
 
         get_similarities, arg_min_or_max = {
             "euclidean": (self.euclidean_distance, np.argmin),
